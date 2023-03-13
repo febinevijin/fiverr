@@ -61,3 +61,13 @@ export const login = asyncHandler(async (req, res) => {
     throw new Error("invalid Email or password");
   }
 });
+
+export const logout = asyncHandler(async (req, res) => {
+  res
+    .clearCookie("userToken", {
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    .send("user has been logged out");
+});

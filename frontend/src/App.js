@@ -12,6 +12,7 @@ import Orders from "./pages/orders/Orders";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
+import Test from "./pages/test/Test";
 
 function App() {
   const Layout = () => {
@@ -70,6 +71,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/test",
+      element: <Test />,
     },
   ]);
 

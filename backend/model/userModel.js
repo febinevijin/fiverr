@@ -19,8 +19,14 @@ const userSchema = new Schema(
       required: true,
     },
     img: {
-      type: String,
-      required: false,
+      profile_id: {
+        type: String,
+      },
+      profile_url: {
+        type: String,
+        default:
+          "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+      },
     },
     country: {
       type: String,

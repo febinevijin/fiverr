@@ -1,33 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-import "./Navbar.scss"
+import "./Navbar.scss";
+import { AuthContext } from "../../context/Context";
 
 const Navbar = () => {
+  const {
+    logout,
+    authState: { user, isLogged },
+  } = AuthContext();
 
-    const [active, setActive] = useState(false)
-  const [open, setOpen] = useState(false)
-  
-  const {pathname} = useLocation()
+  const [active, setActive] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    const isActive = () => {
-       window.scrollY > 0 ? setActive(true) : setActive(false) 
-    }
+  const { pathname } = useLocation();
 
-    useEffect(() => {
-      window.addEventListener("scroll",isActive)
-    
-      return () => {
-        window.removeEventListener("scroll",isActive)
-      }
-    }, [])
-  
-  const currentUser = {
-    id: 1,
-    name: "febin",
-    isSeller: true,
-  }
-    
+  const logoutSession = () => {
+    logout();
+  };
+
+  const isActive = () => {
+    window.scrollY > 0 ? setActive(true) : setActive(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", isActive);
+
+    return () => {
+      window.removeEventListener("scroll", isActive);
+    };
+  }, []);
+
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
@@ -41,20 +44,24 @@ const Navbar = () => {
           <span>Fiverr Buisness</span>
           <span>Explorer</span>
           <span>English</span>
-          <span>Sign In</span>
-          {!currentUser.isSeller && <span>Become A Seller</span>}
-          {!currentUser && <button>Join</button>}
-          {currentUser && (
+          {!isLogged && (
+            <span>
+              <Link to="/login" className="link">
+                login
+              </Link>
+            </span>
+          )}
+
+          {!user.isSeller && <span>Become A Seller</span>}
+          {!isLogged && <button>Join</button>}
+          {isLogged && (
             <>
               <div className="user" onClick={() => setOpen(!open)}>
-                <img
-                  src="https://pbs.twimg.com/media/FjU2lkcWYAgNG6d.jpg"
-                  alt=""
-                />
-                <span>{currentUser?.name}</span>
+                <img src={user.img} alt="" />
+                <span>{user?.name}</span>
                 {open && (
                   <div className="options">
-                    {currentUser.isSeller && (
+                    {user.isSeller && (
                       <>
                         <Link to="/mygigs" className="link">
                           Gigs
@@ -70,7 +77,7 @@ const Navbar = () => {
                     <Link to="/messages" className="link">
                       Messages
                     </Link>
-                    <Link to="/" className="link">
+                    <Link to="" className="link" onClick={logoutSession}>
                       Logout
                     </Link>
                   </div>
@@ -118,6 +125,6 @@ const Navbar = () => {
       )}
     </div>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
